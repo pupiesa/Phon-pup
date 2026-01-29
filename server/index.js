@@ -14,6 +14,6 @@ const db = mysql.createPool({
   database: process.env.DB_NAME || "my_db",
 });
 
-app.get("/", (req, res) => res.send("Backend is runningsss!"));
+app.get("/", (req, res) => res.send("welcome to Phon-pup server"));
 
 app.listen(5000, () => console.log("Server on port 5000"));

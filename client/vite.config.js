@@ -5,7 +5,10 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   server: {
-    host: "0.0.0.0",
+    host: true, // Needed for Docker
     port: 3000,
+    watch: {
+      usePolling: true, // Use this if you are on Windows/macOS and reload isn't working
+    },
   },
 });
