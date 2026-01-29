@@ -1,23 +1,21 @@
-import { Routes, Route, NavLink } from "react-router-dom"; 
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
-import HomePage from "./page-all/HomePage.jsx";
+import { Routes, Route } from "react-router-dom"; 
+import MainLayout from "./layouts/MainLayout.jsx";
+import HomePage from "./pages/Home.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
+// Example of another page component inline, normally this would be in src/pages/Dashboard.jsx
+// const Dashboard = () => <div><h1 className="">Dashboard Page</h1></div>;
+
 function App() {
   return (
-    <>
-      <nav>
-        <NavLink to="/">App</NavLink>
-        <NavLink to="/home">Home</NavLink>
-      </nav>
-      
-      <h1>HELLO</h1>
-
-      <Routes>
-        <Route path="/" element={<div>HIHI</div>} />
+    <Routes>
+      {/* Wrap routes in a Layout to share Navbar/Footer */}
+      <Route element={<MainLayout />}>
+        <Route path="/" element={<Dashboard />} />
         <Route path="/home" element={<HomePage />} />
-      </Routes>
-    </>
+      </Route>
+      
+      {/* You can add more layouts here (e.g. AuthLayout for login pages without navbars) */}
+    </Routes>
   );
 }
 

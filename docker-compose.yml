@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   db:
     image: mysql:8.0
@@ -11,6 +9,17 @@ services:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
+
+  pma:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: root_password
+    depends_on:
+      - db
 
   server:
     build: ./server
@@ -25,6 +34,7 @@ services:
       - db
     volumes:
       - ./server:/app
+      - /app/node_modules
 
   client:
     build: ./client
