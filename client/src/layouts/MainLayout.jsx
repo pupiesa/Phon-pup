@@ -11,14 +11,14 @@ const MainLayout = () => {
           App
         </NavLink>
         <NavLink 
-          to="/home" 
+          to="/dashboard" 
           className={({ isActive }) => isActive ? "text-primary font-bold" : "text-gray-600 dark:text-gray-300 hover:text-primary"}
         >
           Home
         </NavLink>
       </nav>
       
-      <main className="p-8 container mx-auto">
+      <main className="p-8">
         <Outlet />
       </main>
     </div>

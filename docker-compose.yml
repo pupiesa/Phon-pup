@@ -9,6 +9,21 @@ services:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "-proot_password",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   pma:
     image: phpmyadmin/phpmyadmin
@@ -17,9 +32,11 @@ services:
       - "8080:80"
     environment:
       PMA_HOST: db
-      MYSQL_ROOT_PASSWORD: root_password
+      PMA_USER: root
+      PMA_PASSWORD: root_password
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   server:
     build: ./server
@@ -31,7 +48,8 @@ services:
       DB_PASSWORD: root_password
       DB_NAME: my_db
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     volumes:
       - ./server:/app
       - /app/node_modules
@@ -58,7 +76,8 @@ services:
       - DB_NAME=radius_db
       - RADIUS_KEY=testing123 # Shared secret
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
 volumes:
   db_data:

@@ -10,8 +10,8 @@ function App() {
     <Routes>
       {/* Wrap routes in a Layout to share Navbar/Footer */}
       <Route element={<MainLayout />}>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/home" element={<HomePage />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Route>
       
       {/* You can add more layouts here (e.g. AuthLayout for login pages without navbars) */}
