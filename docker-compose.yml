@@ -25,7 +25,6 @@ services:
       - db
     volumes:
       - ./server:/app
-      - /app/node_modules
 
   client:
     build: ./client
@@ -37,6 +36,19 @@ services:
     volumes:
       - ./client:/app
       - /app/node_modules
+  radius:
+    image: 2stacks/freeradius
+    ports:
+      - "1812:1812/udp" # Authentication
+      - "1813:1813/udp" # Accounting
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASS=root_password
+      - DB_NAME=radius_db
+      - RADIUS_KEY=testing123 # Shared secret
+    depends_on:
+      - db
 
 volumes:
   db_data:
