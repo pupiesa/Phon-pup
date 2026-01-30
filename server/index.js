@@ -16,4 +16,12 @@ const db = mysql.createPool({
 
 app.get("/", (req, res) => res.send("welcome to Phon-pup server"));
 
+const prisma = require('./prismaClient');
+// Example usage
+app.get("/users", async (req, res) => {
+  const users = await prisma.user.findMany();
+  res.json(users);
+});
+
 app.listen(5000, () => console.log("Server on port 5000"));
+

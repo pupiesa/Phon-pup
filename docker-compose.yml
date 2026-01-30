@@ -26,18 +26,30 @@ services:
       retries: 20
       start_period: 30s
 
-  pma:
-    image: phpmyadmin/phpmyadmin
-    restart: always
+  # pma:
+  #   image: phpmyadmin/phpmyadmin
+  #   restart: always
+  #   ports:
+  #     - "8080:80"
+  #   environment:
+  #     PMA_HOST: db
+  #     PMA_USER: root
+  #     PMA_PASSWORD: root_password
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+
+  studio:
+    build: ./server
     ports:
-      - "8080:80"
-    environment:
-      PMA_HOST: db
-      PMA_USER: root
-      PMA_PASSWORD: root_password
+      - "5555:5555"
+    command: sh -c "npx prisma db push && npx prisma generate && npx prisma studio --hostname 0.0.0.0 --browser none"
     depends_on:
       db:
         condition: service_healthy
+    volumes:
+      - ./server:/app
+      - /app/node_modules
 
   server:
     build: ./server
@@ -65,13 +77,14 @@ services:
     volumes:
       - ./client:/app
       - /app/node_modules
+
   radius:
     image: 2stacks/freeradius
     ports:
       - "1812:1812/udp" # Authentication
       - "1813:1813/udp" # Accounting
     environment:
-      - DB_HOST=db
+      - DB_HOST=db/users
       - DB_USER=root
       - DB_PASS=root_password
       - DB_NAME=radius_db

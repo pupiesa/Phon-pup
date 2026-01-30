@@ -15,6 +15,24 @@ This is a complete full-stack web application containerized with Docker. It is d
 
 Make sure you have [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running.
 
+### Configuration
+
+Before running the application, you need to create a `.env` file for the server to configure the database connection for Prisma.
+
+Run this command in the root directory:
+
+**Mac / Linux / Windows (Git Bash):**
+
+```bash
+echo "DATABASE_URL=\"mysql://root:root_password@db:3306/my_db\"" > ./server/.env
+```
+
+**Windows (PowerShell):**
+
+```powershell
+"DATABASE_URL=""mysql://root:root_password@db:3306/my_db""" | Out-File -Encoding utf8 -FilePath .\server\.env
+```
+
 ### Run the Application
 
 To start the entire application stack:
