@@ -23,5 +23,32 @@ app.get("/users", async (req, res) => {
   res.json(users);
 });
 
-app.listen(5000, () => console.log("Server on port 5000"));
 
+const RadiusClient = require('node-radius-client');
+const client = new RadiusClient({
+  host: 'radius', // Service name from docker-compose
+  hostPort: 1812,
+  dictionaries: ['/app/node_modules/node-radius-utils/dictionaries/dictionary.rfc2865']
+});
+
+app.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const success = await client.accessRequest({
+      secret: 'testing123', // Must match RADIUS_KEY in docker-compose
+      attributes: [
+        ['User-Name', username],
+        ['User-Password', password]
+      ]
+    });
+    
+    if (success) {
+      res.json({ message: "Authenticated via FreeRADIUS!" });
+    }
+  } catch (err) {
+    res.status(401).json({ error: "Authentication failed" });
+  }
+});
+
+app.listen(5000, () => console.log("Server on port 5000"));

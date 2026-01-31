@@ -9,41 +9,42 @@ services:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d
+
     healthcheck:
-      test:
-        [
-          "CMD",
-          "mysqladmin",
-          "ping",
-          "-h",
-          "localhost",
-          "-u",
-          "root",
-          "-proot_password",
-        ]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
       timeout: 5s
-      retries: 20
-      start_period: 30s
+      retries: 10
+      start_period: 60s
 
-  # pma:
-  #   image: phpmyadmin/phpmyadmin
-  #   restart: always
-  #   ports:
-  #     - "8080:80"
-  #   environment:
-  #     PMA_HOST: db
-  #     PMA_USER: root
-  #     PMA_PASSWORD: root_password
-  #   depends_on:
-  #     db:
-  #       condition: service_healthy
+  pma:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: root_password
+    depends_on:
+      db:
+        condition: service_healthy
 
   studio:
     build: ./server
+    restart: on-failure
     ports:
       - "5555:5555"
-    command: sh -c "npx prisma db push && npx prisma generate && npx prisma studio --hostname 0.0.0.0 --browser none"
+    command: >
+      sh -c "
+        echo 'Waiting for database to be ready...' &&
+        for i in $$(seq 1 30); do
+          npx prisma db push && break || sleep 2;
+        done &&
+        npx prisma generate &&
+        npx prisma studio --hostname 0.0.0.0 --browser none
+      "
     depends_on:
       db:
         condition: service_healthy
@@ -53,6 +54,7 @@ services:
 
   server:
     build: ./server
+    restart: on-failure
     ports:
       - "5000:5000"
     environment:
@@ -80,15 +82,18 @@ services:
 
   radius:
     image: 2stacks/freeradius
+    restart: on-failure
     ports:
       - "1812:1812/udp" # Authentication
       - "1813:1813/udp" # Accounting
     environment:
-      - DB_HOST=db/users
+      - DB_HOST=db
       - DB_USER=root
       - DB_PASS=root_password
       - DB_NAME=radius_db
       - RADIUS_KEY=testing123 # Shared secret
+      - RAD_DEBUG=yes
+      - RAD_CLIENTS=0.0.0.0/0
     depends_on:
       db:
         condition: service_healthy
