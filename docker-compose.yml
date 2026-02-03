@@ -36,6 +36,8 @@ services:
     restart: on-failure
     ports:
       - "5555:5555"
+    environment:
+      DATABASE_URL: mysql://root:root_password@db:3306/my_db
     command: >
       sh -c "
         echo 'Waiting for database to be ready...' &&
@@ -62,6 +64,7 @@ services:
       DB_USER: root
       DB_PASSWORD: root_password
       DB_NAME: my_db
+      DATABASE_URL: mysql://root:root_password@db:3306/my_db
     depends_on:
       db:
         condition: service_healthy
