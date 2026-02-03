@@ -64,28 +64,24 @@ This project uses FreeRADIUS for authentication. Users are stored in the `radius
 ### Add a New User
 
 ```bash
-docker exec phon-pup-db-1 mysql -uroot -proot_password radius_db -e \
-  "INSERT INTO radcheck (username, attribute, op, value) VALUES ('USERNAME', 'Cleartext-Password', ':=', 'PASSWORD');"
+docker exec phon-pup-db-1 mysql -uroot -proot_password radius_db -e "INSERT INTO radcheck (username, attribute, op, value) VALUES ('USERNAME', 'Cleartext-Password', ':=', 'PASSWORD');"
 ```
 
 **Example:**
 ```bash
-docker exec phon-pup-db-1 mysql -uroot -proot_password radius_db -e \
-  "INSERT INTO radcheck (username, attribute, op, value) VALUES ('john', 'Cleartext-Password', ':=', 'secret123');"
+docker exec phon-pup-db-1 mysql -uroot -proot_password radius_db -e "INSERT INTO radcheck (username, attribute, op, value) VALUES ('john', 'Cleartext-Password', ':=', 'secret123');"
 ```
 
 ### List All Users
 
 ```bash
-docker exec phon-pup-db-1 mysql -uroot -proot_password radius_db -e \
-  "SELECT id, username, value AS password FROM radcheck WHERE attribute='Cleartext-Password';"
+docker exec phon-pup-db-1 mysql -uroot -proot_password radius_db -e "SELECT id, username, value AS password FROM radcheck WHERE attribute='Cleartext-Password';"
 ```
 
 ### Update User Password
 
 ```bash
-docker exec phon-pup-db-1 mysql -uroot -proot_password radius_db -e \
-  "UPDATE radcheck SET value='NEW_PASSWORD' WHERE username='USERNAME' AND attribute='Cleartext-Password';"
+docker exec phon-pup-db-1 mysql -uroot -proot_password radius_db -e "UPDATE radcheck SET value='NEW_PASSWORD' WHERE username='USERNAME' AND attribute='Cleartext-Password';"
 ```
 
 ### Delete a User
