@@ -1,8 +1,10 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import AgeVerification from "./components/AgeVerification";
 import MainLayout from "./layouts/MainLayout.jsx";
 import HomePage from "./pages/Home.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
+import Watch from "./pages/Watch.jsx";
 import Login from "./pages/Login.jsx";
 
 // Protected Route wrapper
@@ -11,8 +13,8 @@ function ProtectedRoute({ children }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-900">
-        <div className="animate-spin w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full"></div>
+      <div className="min-h-screen flex items-center justify-center bg-dark">
+        <div className="w-10 h-10 border-4 border-orange-main border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -24,20 +26,20 @@ function ProtectedRoute({ children }) {
   return children;
 }
 
-// Public Route - redirect to dashboard if already logged in
+// Public Route - redirect to home if already logged in
 function PublicRoute({ children }) {
   const { user, loading } = useAuth();
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-900">
-        <div className="animate-spin w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full"></div>
+      <div className="min-h-screen flex items-center justify-center bg-dark">
+        <div className="w-10 h-10 border-4 border-orange-main border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
   if (user) {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return children;
@@ -66,6 +68,7 @@ function AppRoutes() {
       >
         <Route path="/" element={<HomePage />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/watch/:id" element={<Watch />} />
       </Route>
 
       {/* Catch all - redirect to home */}
@@ -76,9 +79,11 @@ function AppRoutes() {
 
 function App() {
   return (
-    <AuthProvider>
-      <AppRoutes />
-    </AuthProvider>
+    <AgeVerification>
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
+    </AgeVerification>
   );
 }
 

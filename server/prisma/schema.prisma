@@ -7,8 +7,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+// Media content model for storing videos, images, and GIFs
+model Media {
+  id           Int       @id @default(autoincrement())
+  title        String
+  description  String?   @db.Text
+  filename     String // stored filename (UUID-based)
+  originalName String // original upload name
+  mediaType    MediaType
+  mimeType     String // actual MIME type
+  thumbnail    String? // thumbnail path for videos
+  duration     Int? // video duration in seconds
+  fileSize     Int // file size in bytes
+  views        Int       @default(0)
+  uploadedBy   String // RADIUS username
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([uploadedBy])
+  @@index([mediaType])
+  @@index([createdAt])
+}
+
+enum MediaType {
+  VIDEO
+  IMAGE
+  GIF
 }

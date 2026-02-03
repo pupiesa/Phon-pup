@@ -1,15 +1,137 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #3b82f6; /* Blue 500 */
-  --color-secondary: #ec4899; /* Pink 500 */
-  --color-accent: #8b5cf6; /* Violet 500 */
+  --color-primary: #ffa31a;
+  --color-text: #1b1b1b;
+  --color-accent: #fcb944;
+  --color-dark: #0d0d0d;
+  --color-darker: #000000;
+  --color-card: #1a1a1a;
+  --color-card-hover: #252525;
+  --color-border: #333333;
   
-  /* You can add custom fonts too */
-  /* --font-display: "Satoshi", "sans-serif"; */
+  /* Phon-Pup brand colors */
+  --color-orange-main: #ff9000;
+  --color-orange-light: #ffb347;
+  --color-orange-dark: #e67e00;
 }
 
-/* 
-  Now you can use these classes in your code:
-  bg-primary, text-accent, border-secondary
-*/
+/* Global styles for Phon-Pup */
+body {
+  background-color: #0d0d0d;
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ff9000;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ffb347;
+}
+
+/* Video card hover effects */
+.media-card {
+  transition: all 0.2s ease-in-out;
+}
+
+.media-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(255, 144, 0, 0.15);
+}
+
+.media-card:hover .thumbnail-overlay {
+  opacity: 1;
+}
+
+/* Upload dropzone */
+.dropzone {
+  border: 2px dashed #333;
+  transition: all 0.3s ease;
+}
+
+.dropzone.drag-active {
+  border-color: #ff9000;
+  background-color: rgba(255, 144, 0, 0.05);
+}
+
+/* Gradient text effect */
+.gradient-text {
+  background: linear-gradient(135deg, #ff9000 0%, #ffb347 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Button styles */
+.btn-primary {
+  background: linear-gradient(135deg, #ff9000 0%, #e67e00 100%);
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #ffb347 0%, #ff9000 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(255, 144, 0, 0.4);
+}
+
+/* Modal backdrop blur */
+.modal-backdrop {
+  backdrop-filter: blur(8px);
+}
+
+/* Video player controls */
+.video-controls {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.video-container:hover .video-controls {
+  opacity: 1;
+}
+
+/* Logo animation */
+@keyframes pulse-glow {
+  0%, 100% {
+    text-shadow: 0 0 10px rgba(255, 144, 0, 0.5);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(255, 144, 0, 0.8), 0 0 30px rgba(255, 144, 0, 0.4);
+  }
+}
+
+.logo-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* View counter badge */
+.view-badge {
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+}
+
+/* Grid responsive */
+.media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .media-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.75rem;
+  }
+}
