@@ -7,7 +7,9 @@ This is a complete full-stack web application containerized with Docker. It is d
 - **Client**: React (Vite), React Router Dom
 - **Server**: Node.js, Express
 - **Database**: MySQL 8.0
+- **Authentication**: FreeRADIUS
 - **DevOps**: Docker, Docker Compose
+
 
 ## 🚀 Getting Started
 
@@ -37,7 +39,54 @@ docker compose down
 
 ---
 
-## 📦 Managing Dependencies (Important!)
+## � FreeRADIUS User Management
+
+This project uses FreeRADIUS for authentication. Users are stored in the `radius_db` database in the `radcheck` table.
+
+### Add a New User
+
+```bash
+docker exec phon-pup-db-1 mysql -uroot -proot_password radius_db -e \
+  "INSERT INTO radcheck (username, attribute, op, value) VALUES ('USERNAME', 'Cleartext-Password', ':=', 'PASSWORD');"
+```
+
+**Example:**
+```bash
+docker exec phon-pup-db-1 mysql -uroot -proot_password radius_db -e \
+  "INSERT INTO radcheck (username, attribute, op, value) VALUES ('john', 'Cleartext-Password', ':=', 'secret123');"
+```
+
+### List All Users
+
+```bash
+docker exec phon-pup-db-1 mysql -uroot -proot_password radius_db -e \
+  "SELECT id, username, value AS password FROM radcheck WHERE attribute='Cleartext-Password';"
+```
+
+### Update User Password
+
+```bash
+docker exec phon-pup-db-1 mysql -uroot -proot_password radius_db -e \
+  "UPDATE radcheck SET value='NEW_PASSWORD' WHERE username='USERNAME' AND attribute='Cleartext-Password';"
+```
+
+### Delete a User
+
+```bash
+docker exec phon-pup-db-1 mysql -uroot -proot_password radius_db -e \
+  "DELETE FROM radcheck WHERE username='USERNAME';"
+```
+
+### Default Test User
+
+| Username   | Password   |
+|------------|------------|
+| `testuser` | `testpass` |
+
+---
+
+
+## �📦 Managing Dependencies (Important!)
 
 This project is configured to keep running smoothly on Windows and Linux by isolating the node dependencies inside the container.
 
