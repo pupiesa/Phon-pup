@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const API_URL = "http://localhost:5000";
+const API_URL = "http://172.16.8.217:5000";
 
 function MediaCard({ media }) {
   const { id, title, filename, mediaType, views, uploadedBy, createdAt, mimeType } = media;

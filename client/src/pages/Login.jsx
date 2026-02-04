@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-const API_URL = "http://localhost:5000";
+const API_URL = "http://172.16.8.217:5000";
 
 function Login() {
   const [isRegister, setIsRegister] = useState(false);

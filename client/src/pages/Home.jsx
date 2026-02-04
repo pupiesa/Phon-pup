@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import VideoGrid from "../components/VideoGrid";
 
-const API_URL = "http://localhost:5000";
+const API_URL = "http://172.16.8.217:5000";
 
 function Home({ refreshTrigger }) {
   const [searchParams] = useSearchParams();
