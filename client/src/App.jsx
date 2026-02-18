@@ -6,6 +6,7 @@ import HomePage from "./pages/Home.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Watch from "./pages/Watch.jsx";
 import Login from "./pages/Login.jsx";
+import PopupName from "./components/PopupName.jsx";
 
 // Protected Route wrapper
 function ProtectedRoute({ children }) {
@@ -69,6 +70,7 @@ function AppRoutes() {
         <Route path="/" element={<HomePage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/watch/:id" element={<Watch />} />
+        <Route path="/listname" element={<PopupName />} />
       </Route>
 
       {/* Catch all - redirect to home */}
